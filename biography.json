@@ -1,0 +1,75 @@
+{
+  "firstName": "Yanuar",
+  "middleName": "Adinagoro Vishnu",
+  "lastName": "Saputro",
+  "dateOfBitrh": "1996-09-01",
+  "domicile": "Malang, East Java, Indonesia",
+  "nationality": "Indonesian",
+  "languages": ["Indonesian", "English", "Javanese"],
+  "professionalSummary": "Passionate and results-driven software engineer with 4+ years of experience designing and building scalable back-end systems and RESTful APIs using .NET and C#. Adept at collaborating with cross-functional teams to deliver high-quality software solutions. Strong background in cloud services, microservices architecture, and agile methodologies.",
+  "experiences": [
+    {
+      "yearRange": "March 2024 - January 2026",
+      "company": "PT. Berca Hardayaperkasa",
+      "role": "Technology Specialist",
+      "responsibilities": [
+        "Designed and developed RESTful APIs using ASP.NET Core, serving over 1 million monthly active users.",
+        "Led migration of monolithic architecture to microservices, reducing deployment time by 40%.",
+        "Collaborated with frontend teams to define API contracts and integrate services.",
+        "Conducted code reviews and mentored junior engineers on best practices."
+      ],
+      "techStacks": ["C#", "Javascript", "CSS", "Creatio CRM", "SQL Server"]
+    },
+    {
+      "yearRange": "December 2019 - November 2023",
+      "company": "PT Nusantara Duta Solusindo",
+      "role": "Outsystems Engineer",
+      "responsibilities": [
+        "Built and maintained internal CRM system used by 500+ employees.",
+        "Integrated third-party payment gateways and notification services.",
+        "Optimized SQL queries, improving average API response time by 30%."
+      ],
+      "techStacks": ["C#", "Javascript", "SQL Server", "Oracle", "Outsystems"]
+    }
+  ],
+  "educations": [
+    {
+      "yearRange": "2014 - 2018",
+      "degree": "Bachelor of Informatics Engineering",
+      "school": "Politeknik Negeri Malang",
+      "gpa": "3.21"
+    }
+  ],
+  "certifications": [
+    {
+      "year": "2024",
+      "name": "Outsystems Associate Reactive Developer",
+      "issuer": "Outsystems",
+      "credentialLink": "https://learn.microsoft.com/en-us/certifications/azure-developer/"
+    },
+    {
+      "year": "2026",
+      "name": "Foundational C# with Microsoft",
+      "issuer": "freeCodeCamp",
+      "credentialLink": "https://aws.amazon.com/certification/certified-solutions-architect-associate/"
+    }
+  ],
+  "skills": [
+    {
+      "category": "Programming Languages",
+      "skills": ["C#", "TypeScript", "JavaScript", "SQL"]
+    },
+    {
+      "category": "Frameworks & Libraries",
+      "skills": [".NET Core", "React"]
+    },
+    {
+      "category": "DevOps & Operating Systems",
+      "skills": ["Docker", "Arch Linux"]
+    },
+    {
+      "category": "Databases",
+      "skills": ["MySQL", "SQL Server"]
+    }
+  ]
+}
