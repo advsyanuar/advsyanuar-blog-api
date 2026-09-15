@@ -6,17 +6,17 @@
   "domicile": "Malang, East Java, Indonesia",
   "nationality": "Indonesian",
   "languages": ["Indonesian", "English", "Javanese"],
-  "professionalSummary": "Passionate and results-driven software engineer with 4+ years of experience designing and building scalable back-end systems and RESTful APIs using .NET and C#. Adept at collaborating with cross-functional teams to deliver high-quality software solutions. Strong background in cloud services, microservices architecture, and agile methodologies.",
+  "professionalSummary": "Junior Software Engineer transitioning from 4+ years of enterprise low-code development (OutSystems & Creatio) in the Banking & Finance sector to full-code engineering. He has a good foundation in complex business logic, system optimization, and POC development. Currently sharpening core programming skills in C# (.NET) and JavaScript/TypeScript.",
   "experiences": [
     {
       "yearRange": "March 2024 - January 2026",
       "company": "PT. Berca Hardayaperkasa",
       "role": "Technology Specialist",
       "responsibilities": [
-        "Designed and developed RESTful APIs using ASP.NET Core, serving over 1 million monthly active users.",
-        "Led migration of monolithic architecture to microservices, reducing deployment time by 40%.",
-        "Collaborated with frontend teams to define API contracts and integrate services.",
-        "Conducted code reviews and mentored junior engineers on best practices."
+        "POC Development & AI Research",
+        "Mobile Customization (Ajinomoto) using Javascript on Creatio",
+        "System Enhancement & Legacy Maintenance (BSI) application OASE.",
+        "Developed and consumed REST APIs using C# in Creatio for Jamkrida and Trade Finance POC projects."
       ],
       "techStacks": ["C#", "Javascript", "CSS", "Creatio CRM", "SQL Server"]
     },
@@ -25,9 +25,9 @@
       "company": "PT Nusantara Duta Solusindo",
       "role": "Outsystems Engineer",
       "responsibilities": [
-        "Built and maintained internal CRM system used by 500+ employees.",
-        "Integrated third-party payment gateways and notification services.",
-        "Optimized SQL queries, improving average API response time by 30%."
+        "Placed at PT. Bank Mandiri (persero) tbk.",
+        "Developed 5+ internal web applications (EUC Portal, Document Management, Rent Monitoring, etc.).",
+        "Managed end-to-end Change Requests (CR)."
       ],
       "techStacks": ["C#", "Javascript", "SQL Server", "Oracle", "Outsystems"]
     }
@@ -45,13 +45,19 @@
       "year": "2024",
       "name": "Outsystems Associate Reactive Developer",
       "issuer": "Outsystems",
-      "credentialLink": "https://learn.microsoft.com/en-us/certifications/azure-developer/"
+      "credentialLink": "#"
     },
     {
       "year": "2026",
       "name": "Foundational C# with Microsoft",
       "issuer": "freeCodeCamp",
-      "credentialLink": "https://aws.amazon.com/certification/certified-solutions-architect-associate/"
+      "credentialLink": "https://www.freecodecamp.org/certification/fcc-160ecf92-810b-42ff-b56c-9a2fe77b7e3e/foundational-c-sharp-with-microsoft"
+    },
+    {
+      "year": "2026",
+      "name": ".NET Fundamentals: Concepts, APIs, and Libraries in the .NET Framework",
+      "issuer": "Linkedin",
+      "credentialLink": "https://www.linkedin.com/learning/certificates/0cb30b6177399069cc430a400d30bcc9b4a8c16aa6408826589696d4c2513a3e"
     }
   ],
   "skills": [
