@@ -12,11 +12,15 @@ public class HomeController : Controller
 {
     private readonly AppDbContext _context;
     private readonly ImageUpload _imageUpload;
+    private readonly JsonFileReader<SiteSettings> _settingsReader;
+    private readonly JsonFileWriter<SiteSettings> _settingsWriter;
 
-    public HomeController(AppDbContext context, ImageUpload imageUpload)
+    public HomeController(AppDbContext context, ImageUpload imageUpload, JsonFileReader<SiteSettings> settingsReader, JsonFileWriter<SiteSettings> settingsWriter)
     {
         _context = context;
         _imageUpload = imageUpload;
+        _settingsReader = settingsReader;
+        _settingsWriter = settingsWriter;
     }
 
     [HttpGet]
@@ -60,6 +64,8 @@ public class HomeController : Controller
 
         model.Project ??= new FormProjectDTO("", "", "", "", "", [], null, null, null);
         model.Demo ??= new PostDemoDTO("", null, "", null, null, "", [], null);
+
+        model.SiteSettings = await _settingsReader.ReadAsync();
 
         ViewData["Title"] = "Admin";
         return View(model);
@@ -191,6 +197,38 @@ public class HomeController : Controller
             _context.Demos.Remove(entity);
             await _context.SaveChangesAsync();
         }
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateSiteSetting([FromForm] SiteSettings siteSettings)
+    {
+        siteSettings.TypedTexts = FilterList(siteSettings.TypedTexts);
+        siteSettings.MadeWith = FilterList(siteSettings.MadeWith);
+        siteSettings.SocialLinks = siteSettings.SocialLinks
+            .Where(s => !string.IsNullOrWhiteSpace(s.Name) || !string.IsNullOrWhiteSpace(s.Label) || !string.IsNullOrWhiteSpace(s.Url))
+            .Select(s => new SocialLink
+            {
+                Name = s.Name.Trim(),
+                Label = s.Label.Trim(),
+                Url = s.Url.Trim()
+            })
+            .ToList();
+        siteSettings.GalleryItems = siteSettings.GalleryItems
+            .Where(g => !string.IsNullOrWhiteSpace(g.Id) || !string.IsNullOrWhiteSpace(g.Title))
+            .Select(g => new GalleryItem
+            {
+                Id = g.Id.Trim(),
+                Title = g.Title.Trim(),
+                Numbering = g.Numbering,
+                Description = g.Description.Trim(),
+                Image = g.Image?.Trim(),
+                Video = g.Video?.Trim()
+            })
+            .ToList();
+
+        await _settingsWriter.WriteAsync(siteSettings);
         return RedirectToAction(nameof(Index));
     }
 

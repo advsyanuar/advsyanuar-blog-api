@@ -89,12 +89,14 @@ input.tab-radio {
 }
 
 input#tab-project:checked ~ .tab-bar label[for="tab-project"],
-input#tab-demo:checked ~ .tab-bar label[for="tab-demo"] {
+input#tab-demo:checked ~ .tab-bar label[for="tab-demo"],
+input#tab-sitesetting:checked ~ .tab-bar label[for="tab-sitesetting"] {
     color: var(--text);
 }
 
 input#tab-project:checked ~ .tab-bar label[for="tab-project"]::after,
-input#tab-demo:checked ~ .tab-bar label[for="tab-demo"]::after {
+input#tab-demo:checked ~ .tab-bar label[for="tab-demo"]::after,
+input#tab-sitesetting:checked ~ .tab-bar label[for="tab-sitesetting"]::after {
     opacity: 1;
 }
 
@@ -120,6 +122,10 @@ input#tab-demo:checked ~ .form-card#card-demo {
     grid-template-columns: 300px 1fr;
     gap: 24px;
     align-items: start;
+}
+
+input#tab-sitesetting:checked ~ .form-card#card-sitesetting {
+    display: block;
 }
 
 @media (max-width: 800px) {
@@ -465,4 +471,117 @@ input#tab-demo:checked ~ .form-card#card-demo {
     border: 1px solid var(--border);
     border-radius: 8px;
     min-width: 0;
+}
+
+.complex-list {
+    display: grid;
+    gap: 12px;
+}
+
+.complex-row {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+}
+
+.complex-row-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.complex-row-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.complex-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.complex-grid .full {
+    grid-column: 1 / -1;
+}
+
+.complex-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.complex-preview video {
+    width: 96px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: var(--bg);
+    display: block;
+}
+
+.complex-preview .no-preview {
+    width: 96px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    flex: 0 0 auto;
+}
+
+.complex-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-field input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    accent-color: var(--accent);
+    padding: 0;
+}
+
+.checkbox-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+}
+
+.logo-preview {
+    margin-top: 8px;
+    padding: 12px;
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 60px;
+}
+
+.logo-preview svg {
+    width: 60px;
+    height: 42px;
+    display: block;
 }

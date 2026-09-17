@@ -11,6 +11,8 @@ public class HomeIndexViewModel
     public FormProjectDTO FormProject { get; set; } = default!;
     public PostDemoDTO Demo { get; set; } = default!;
 
+    public SiteSettings SiteSettings { get; set; } = new();
+
     public List<string> ExistingProjectImages { get; set; } = [];
     public List<string> ExistingProjectVideos { get; set; } = [];
 

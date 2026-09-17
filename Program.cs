@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using portfolio_api.Context;
 using portfolio_api.Helpers;
+using portfolio_api.Models;
 
 namespace portfolio_api;
 
@@ -30,6 +31,8 @@ public static class Program
         builder.Services.AddControllers();
         builder.Services.AddControllersWithViews();
         builder.Services.AddSingleton<ImageUpload>();
+        builder.Services.AddSingleton(new JsonFileReader<SiteSettings>("site_setting.json"));
+        builder.Services.AddSingleton(new JsonFileWriter<SiteSettings>("site_setting.json"));
         var app = builder.Build();
 
         // Apply pending EF Core migrations on startup (creates DB + tables if they don't exist)
