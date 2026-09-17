@@ -1,0 +1,8 @@
+bin
+obj
+.gitignore
+.dockerignore
+.env
+.git
+.vscode
+*.md

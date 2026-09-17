@@ -2,3 +2,15 @@
 
 GET {{portfolio_api_HostAddress}}/api/v1/biography
 Accept: application/json
+
+###
+
+GET {{portfolio_api_HostAddress}}/api/v1/projects
+Accept: application/json
+
+###
+
+POST {{portfolio_api_HostAddress}}/api/v1/demos
+Accept: application/json
+
+###

@@ -1,0 +1,408 @@
+@model portfolio_api.ViewModels.HomeIndexViewModel
+@{
+    ViewData["Title"] = "Admin";
+    bool editingProject = Model.EditProjectId is not null;
+    bool editingDemo = Model.EditDemoId is not null;
+    var projectStack = Model.Project?.StackUsed ?? [];
+    var demoStack = Model.Demo?.StacksUsed ?? [];
+}
+
+<link rel="stylesheet" href="~/css/admin.css" />
+
+<div class="page">
+    <h1>@ViewData["Title"]</h1>
+    <p class="page-subtitle">Manage your portfolio</p>
+
+    <div class="tabs">
+        <input class="tab-radio" type="radio" name="tabs" id="tab-project" checked />
+        <input class="tab-radio" type="radio" name="tabs" id="tab-demo" />
+
+        <nav class="tab-bar">
+            <label class="tab" for="tab-project">Projects (@Model.Projects.Count)</label>
+            <label class="tab" for="tab-demo">Demos (@Model.Demos.Count)</label>
+        </nav>
+
+        <section class="form-card" id="card-project">
+            <div class="panel-list">
+                <h2>Projects</h2>
+                <div class="data-list">
+                    @if (Model.Projects.Count == 0)
+                    {
+                        <div class="empty-state">No projects yet.</div>
+                    }
+                    @foreach (var item in Model.Projects)
+                    {
+                        <div class="data-item">
+                            <div class="data-item-title">@item.Title</div>
+                            <div class="data-item-meta">
+                                <span class="badge">@item.Category</span>
+                                <span>Initiated @item.DateInitiated</span>
+                            </div>
+                            <div class="data-item-actions">
+                                <a class="item-btn" asp-action="Index" asp-route-editProject="@item.Id">Edit</a>
+                                <form method="post" asp-action="DeleteProject" asp-route-id="@item.Id">
+                                    <button class="item-btn danger" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="panel-form">
+                @if (editingProject)
+                {
+                    <div class="edit-msg">
+                        <span>Editing project #@Model.EditProjectId</span>
+                        <a asp-action="Index">Cancel</a>
+                    </div>
+                }
+                <h2>@(editingProject ? "Edit Project" : "Add Project")</h2>
+                <form method="post" enctype="multipart/form-data" asp-action="@(editingProject ? "UpdateProject" : "CreateProject")" asp-route-id="@Model.EditProjectId">
+                    @Html.AntiForgeryToken()
+                    <div class="form-field">
+                        <label asp-for="Project.Title">Title</label>
+                        <input asp-for="Project.Title" required />
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Project.Description">Description</label>
+                        <textarea asp-for="Project.Description"></textarea>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Project.Category">Category</label>
+                        <input asp-for="Project.Category" required />
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Project.DateInitiated">Date Initiated</label>
+                        <input asp-for="Project.DateInitiated" />
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Project.DatePublished">Date Published</label>
+                        <input asp-for="Project.DatePublished" />
+                    </div>
+
+                    <div class="form-field" data-list="Project.StackUsed">
+                        <label>Stack Used</label>
+                        <div class="list-field">
+                            @for (int i = 0; i < Math.Max(2, projectStack.Count); i++)
+                            {
+                                <div class="list-row">
+                                    <input name="Project.StackUsed" value="@(i < projectStack.Count ? projectStack[i] : "")" placeholder="C#" />
+                                    <button type="button" class="remove-item" aria-label="Remove">&times;</button>
+                                </div>
+                            }
+                        </div>
+                        <div class="list-actions">
+                            <button type="button" class="add-item">+ Add</button>
+                            <span class="list-counter"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-field" data-media="Project.Images" data-accept="image/*">
+                        <label>Images</label>
+                        <div class="list-field media-list">
+                            @foreach (var path in Model.ExistingProjectImages)
+                            {
+                                <div class="list-row existing">
+                                    <label class="keep-item">
+                                        <input type="checkbox" name="ExistingProjectImages" value="@path" checked />
+                                        <img class="media-thumb" src="@path" alt="" />
+                                        <span class="file-name">@System.IO.Path.GetFileName(path)</span>
+                                    </label>
+                                    <button type="button" class="remove-item" aria-label="Remove">&times;</button>
+                                </div>
+                            }
+                        </div>
+                        <div class="list-actions">
+                            <button type="button" class="add-item pick">+ Add files</button>
+                            <input type="file" class="file-input" name="Project.Images" multiple accept="image/*" hidden />
+                            <span class="list-counter"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-field" data-media="Project.Videos" data-accept="video/*">
+                        <label>Videos</label>
+                        <div class="list-field media-list">
+                            @foreach (var path in Model.ExistingProjectVideos)
+                            {
+                                <div class="list-row existing">
+                                    <label class="keep-item">
+                                        <input type="checkbox" name="ExistingProjectVideos" value="@path" checked />
+                                        <video class="media-thumb" src="@path"></video>
+                                        <span class="file-name">@System.IO.Path.GetFileName(path)</span>
+                                    </label>
+                                    <button type="button" class="remove-item" aria-label="Remove">&times;</button>
+                                </div>
+                            }
+                        </div>
+                        <div class="list-actions">
+                            <button type="button" class="add-item pick">+ Add files</button>
+                            <input type="file" class="file-input" name="Project.Videos" multiple accept="video/*" hidden />
+                            <span class="list-counter"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Project.Link">Link</label>
+                        <input asp-for="Project.Link" placeholder="https://..." />
+                    </div>
+
+                    <button class="btn" type="submit">@(editingProject ? "Update Project" : "Save Project")</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="form-card" id="card-demo">
+            <div class="panel-list">
+                <h2>Demos</h2>
+                <div class="data-list">
+                    @if (Model.Demos.Count == 0)
+                    {
+                        <div class="empty-state">No demos yet.</div>
+                    }
+                    @foreach (var item in Model.Demos)
+                    {
+                        <div class="data-item">
+                            <div class="data-item-title">@item.Title</div>
+                            <div class="data-item-meta">
+                                <span class="badge">@item.Category</span>
+                                <span>@(item.Year ?? "No year")</span>
+                            </div>
+                            <div class="data-item-actions">
+                                <a class="item-btn" asp-action="Index" asp-route-editDemo="@item.Id">Edit</a>
+                                <form method="post" asp-action="DeleteDemo" asp-route-id="@item.Id">
+                                    <button class="item-btn danger" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="panel-form">
+                @if (editingDemo)
+                {
+                    <div class="edit-msg">
+                        <span>Editing demo #@Model.EditDemoId</span>
+                        <a asp-action="Index">Cancel</a>
+                    </div>
+                }
+                <h2>@(editingDemo ? "Edit Demo" : "Add Demo")</h2>
+                <form method="post" asp-action="@(editingDemo ? "UpdateDemo" : "CreateDemo")" asp-route-id="@Model.EditDemoId">
+                    <div class="form-field">
+                        <label asp-for="Demo.Title">Title</label>
+                        <input asp-for="Demo.Title" required />
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Demo.Stakeholder">Stakeholder</label>
+                        <input asp-for="Demo.Stakeholder" />
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Demo.Category">Category</label>
+                        <input asp-for="Demo.Category" required />
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Demo.Year">Year</label>
+                        <input asp-for="Demo.Year" />
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Demo.Description">Description</label>
+                        <textarea asp-for="Demo.Description"></textarea>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Demo.DemoUrl">Demo URL</label>
+                        <input asp-for="Demo.DemoUrl" placeholder="https://..." required />
+                    </div>
+
+                    <div class="form-field" data-list="Demo.StacksUsed">
+                        <label>Stacks Used</label>
+                        <div class="list-field">
+                            @for (int i = 0; i < Math.Max(2, demoStack.Count); i++)
+                            {
+                                <div class="list-row">
+                                    <input name="Demo.StacksUsed" value="@(i < demoStack.Count ? demoStack[i] : "")" placeholder="Blazor" />
+                                    <button type="button" class="remove-item" aria-label="Remove">&times;</button>
+                                </div>
+                            }
+                        </div>
+                        <div class="list-actions">
+                            <button type="button" class="add-item">+ Add</button>
+                            <span class="list-counter"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Demo.GithubLink">GitHub Link</label>
+                        <input asp-for="Demo.GithubLink" placeholder="https://github.com/..." />
+                    </div>
+
+                    <button class="btn" type="submit">@(editingDemo ? "Update Demo" : "Save Demo")</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const MAX = 10;
+
+        const fields = document.querySelectorAll("[data-list]");
+
+        fields.forEach(function (field) {
+            const rows = field.querySelector(".list-field");
+            const addBtn = field.querySelector(".add-item");
+            const counter = field.querySelector(".list-counter");
+            const name = field.dataset.list;
+
+            function update() {
+                const count = rows.querySelectorAll(".list-row").length;
+                counter.textContent = count + " / " + MAX;
+                addBtn.disabled = count >= MAX;
+            }
+
+            function removeRow(row) {
+                row.remove();
+                update();
+            }
+
+            rows.querySelectorAll(".list-row").forEach(function (row) {
+                row.querySelector(".remove-item").addEventListener("click", function () {
+                    removeRow(row);
+                });
+            });
+
+            addBtn.addEventListener("click", function () {
+                const current = rows.querySelectorAll(".list-row");
+                if (current.length >= MAX) return;
+                if (current.length === 1 && current[0].querySelector("input").value.trim() === "") return;
+
+                const row = document.createElement("div");
+                row.className = "list-row";
+
+                const input = document.createElement("input");
+                input.type = "text";
+                input.name = name;
+
+                const remove = document.createElement("button");
+                remove.type = "button";
+                remove.className = "remove-item";
+                remove.setAttribute("aria-label", "Remove");
+                remove.innerHTML = "&times;";
+                remove.addEventListener("click", function () {
+                    removeRow(row);
+                });
+
+                row.appendChild(input);
+                row.appendChild(remove);
+                rows.appendChild(row);
+                input.focus();
+                update();
+            });
+
+            field.closest("form").addEventListener("submit", function () {
+                rows.querySelectorAll(".list-row input").forEach(function (input) {
+                    if (input.value.trim() === "") input.name = "";
+                });
+            });
+
+            update();
+        });
+
+        document.querySelectorAll("[data-media]").forEach(function (field) {
+            const rows = field.querySelector(".media-list");
+            const counter = field.querySelector(".list-counter");
+            const addBtn = field.querySelector(".add-item");
+            const fileInput = field.querySelector(".file-input");
+            const form = field.closest("form");
+            const selected = [];
+
+            function update() {
+                const kept = rows.querySelectorAll(".list-row.existing:not(.removed)").length;
+                const count = kept + rows.querySelectorAll(".list-row.pending").length;
+                counter.textContent = count + " / " + MAX;
+                addBtn.disabled = count >= MAX;
+            }
+
+            function renderChips() {
+                rows.querySelectorAll(".list-row.pending").forEach(function (row) {
+                    row.remove();
+                });
+
+                selected.forEach(function (file, index) {
+                    const row = document.createElement("div");
+                    row.className = "list-row pending";
+
+                    const chip = document.createElement("div");
+                    chip.className = "file-chip";
+                    const name = document.createElement("span");
+                    name.className = "file-name";
+                    name.textContent = file.name;
+                    chip.appendChild(name);
+
+                    const remove = document.createElement("button");
+                    remove.type = "button";
+                    remove.className = "remove-item";
+                    remove.setAttribute("aria-label", "Remove");
+                    remove.innerHTML = "&times;";
+                    remove.addEventListener("click", function () {
+                        selected.splice(index, 1);
+                        renderChips();
+                        update();
+                    });
+
+                    row.appendChild(chip);
+                    row.appendChild(remove);
+                    rows.appendChild(row);
+                });
+            }
+
+            field.querySelectorAll(".list-row.existing").forEach(function (row) {
+                const check = row.querySelector("input[type='checkbox']");
+
+                check.addEventListener("change", function () {
+                    row.classList.toggle("removed", !check.checked);
+                    update();
+                });
+
+                row.querySelector(".remove-item").addEventListener("click", function () {
+                    check.checked = false;
+                    row.classList.add("removed");
+                    update();
+                });
+            });
+
+            addBtn.addEventListener("click", function () {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener("change", function () {
+                if (fileInput.files.length === 0) return;
+                selected.push.apply(selected, Array.from(fileInput.files));
+                fileInput.value = "";
+                renderChips();
+                update();
+            });
+
+            form.addEventListener("submit", function () {
+                if (typeof DataTransfer === "undefined") return;
+                const dt = new DataTransfer();
+                selected.forEach(function (file) {
+                    dt.items.add(file);
+                });
+                fileInput.files = dt.files;
+            });
+
+            update();
+        });
+    })();
+</script>

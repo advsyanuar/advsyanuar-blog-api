@@ -5,4 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>portfolio_api</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore"  />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+  </ItemGroup>
 </Project>

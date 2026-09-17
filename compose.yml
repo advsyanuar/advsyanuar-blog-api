@@ -1,0 +1,10 @@
+services:
+  portfolio_service:
+    image: advsyanuar-portfolio-service
+    container_name: portfolio-service
+    ports:
+      - "8085:8080"
+    volumes:
+      - ./data:/app/data
+      - ./storage:/app/wwwroot/storage
+    restart: unless-stopped

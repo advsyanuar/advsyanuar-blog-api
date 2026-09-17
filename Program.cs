@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using portfolio_api.Context;
+using portfolio_api.Helpers;
+
 namespace portfolio_api;
 
 public static class Program
@@ -8,6 +12,7 @@ public static class Program
 
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: cors_policy, builder =>
@@ -19,12 +24,21 @@ public static class Program
         });
 
         builder.Services.AddControllers();
-
+        builder.Services.AddControllersWithViews();
+        builder.Services.AddSingleton<ImageUpload>();
         var app = builder.Build();
+
+        // Apply pending EF Core migrations on startup (creates DB + tables if they don't exist)
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            db.Database.Migrate();
+        }
 
         app.UseCors(cors_policy);
 
         app.UseHttpsRedirection();
+        app.UseStaticFiles();
 
         app.UseAuthorization();
 
