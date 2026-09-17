@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using portfolio_api.Context;
 using portfolio_api.Helpers;
@@ -33,6 +34,17 @@ public static class Program
         builder.Services.AddSingleton<ImageUpload>();
         builder.Services.AddSingleton(new JsonFileReader<SiteSettings>("site_setting.json"));
         builder.Services.AddSingleton(new JsonFileWriter<SiteSettings>("site_setting.json"));
+
+        // Persist Data Protection keys (antiforgery tokens) to a surviving volume so
+        // tokens issued before a container recreation remain decryptable.
+        var dataProtectionKeyDir = builder.Configuration["DataProtection:KeyDirectory"]
+            ?? Path.Combine(builder.Environment.ContentRootPath, "data", "dataprotection-keys");
+
+        Directory.CreateDirectory(dataProtectionKeyDir);
+        builder.Services.AddDataProtection()
+            .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeyDir))
+            .SetApplicationName("portfolio-api");
+
         var app = builder.Build();
 
         // Apply pending EF Core migrations on startup (creates DB + tables if they don't exist)

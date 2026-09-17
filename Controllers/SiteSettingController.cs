@@ -5,7 +5,7 @@ using portfolio_api.Models;
 namespace portfolio_api.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1/site-settings")]
 public class SiteSettingController : ControllerBase
 {
     [HttpGet]

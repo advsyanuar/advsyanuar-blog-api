@@ -14,3 +14,8 @@ POST {{portfolio_api_HostAddress}}/api/v1/demos
 Accept: application/json
 
 ###
+
+GET {{portfolio_api_HostAddress}}/api/v1/site-settings
+Accept: application/json
+
+###
