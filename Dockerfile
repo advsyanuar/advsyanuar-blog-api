@@ -20,6 +20,8 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+RUN mkdir -p /app/data /app/wwwroot/storage && chown -R app:app /app/data /app/wwwroot/storage
+
 # DB file will be created here at runtime by EF Core migrations
 VOLUME /app/data
 # Uploaded images/videos live here and must persist across container restarts

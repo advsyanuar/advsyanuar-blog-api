@@ -13,11 +13,15 @@ public static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+        string[] corsOrigins = (builder.Configuration["Cors:AllowedOrigins"] ?? "http://localhost:5173,http://advsyanuar.cloud")
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: cors_policy, builder =>
             {
-                builder.WithOrigins("http://localhost:5173", "http://advsyanuar.cloud");
+                builder.WithOrigins(corsOrigins);
                 builder.AllowAnyMethod();
                 builder.AllowAnyHeader();
             });
